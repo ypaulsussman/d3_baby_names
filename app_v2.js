@@ -13,6 +13,21 @@ var totalHeight = graphHeight + margin.top + margin.bottom;
 var axisPadding = 5;
 var bandPadding = 0.5;
 
+function styleAxisNodes(axisNodes) {
+  axisNodes.selectAll('.domain')
+    .attr({
+      fill: 'none',
+      'stroke-width': 1,
+      stroke: 'black'
+    });
+  axisNodes.selectAll('.tick line')
+    .attr({
+      fill: 'none',
+      'stroke-width': 1,
+      stroke: 'black'
+    });
+}
+
 
 d3.csv('baby_names_data/yob1880.csv', function(data) {
 
@@ -53,17 +68,28 @@ d3.csv('baby_names_data/yob1880.csv', function(data) {
       margin.top + ")");
 
 
-//============== create the bars ==============//
+  //============== create the bars ==============//
   var bands = d3.scale.ordinal()
+    // sets the input domain of this scale to the array of values passed in (so
+    // e.g. the first element in the array parameter will be mapped to the first
+    // element in the range, etc.)
     .domain(topNameCounts)
+    // below, first param is min & max value of interval, which is divided into "n"
+    // equal bands, where "n" is the number of data; bandPadding is (between 0 and 1)
+    // the amount of each band which should be devoted to padding
     .rangeBands([0, graphWidth], bandPadding);
 
   var yScale = d3.scale.linear()
+    // top is is 0; bottom is the maxNameCount
+        // @QUESTION: why not the minNameCount?
     .domain([0, maxNameCount])
+    // top is 0; bottom is graphHeight
     .range([0, graphHeight]);
 
   function translator(d, i) {
-    return "translate(" + (bands.range()[i]* 1.02) + "," +
+    // 1.02 below is a magic number chosen by trial and error, to keep the
+    // axis ticks as [aligned to the vertical bars] as possible.
+    return "translate(" + (bands.range()[i] * 1.02) + "," +
       (graphHeight - yScale(d)) + ")";
   }
 
@@ -94,13 +120,15 @@ d3.csv('baby_names_data/yob1880.csv', function(data) {
       fill: 'white'
     });
 
-//============== create the axes ==============//
+  //============== create the axes ==============//
   var leftAxisGroup = svg.append('g');
   leftAxisGroup.attr({
     transform: 'translate(' + (margin.left - axisPadding) + ',' + margin.top + ')'
   });
 
+  // cool: here, using different scale for [y-values of bars] vs [y-values of axis]
   var yAxisScale = d3.scale.linear()
+    // makes scale descend from highest value at top to lowest at bottom
     .domain([maxNameCount, 0])
     .range([0, graphHeight]);
 
@@ -112,11 +140,12 @@ d3.csv('baby_names_data/yob1880.csv', function(data) {
   styleAxisNodes(leftAxisNodes);
 
   var bottomAxisScale = d3.scale.ordinal()
+    // see 'var bands', above
     .domain(topNames)
+    // array param offsets the left axis slightly to the right
     .rangeBands([axisPadding, graphWidth + axisPadding]);
 
-  var bottomAxis = d3.svg
-    .axis()
+  var bottomAxis = d3.svg.axis()
     .scale(bottomAxisScale)
     .orient("bottom");
 
@@ -124,8 +153,7 @@ d3.csv('baby_names_data/yob1880.csv', function(data) {
   var bottomAxisY = totalHeight - margin.bottom + axisPadding;
   var bottomAxisGroup = svg.append("g")
     .attr({
-      transform: 'translate(' + bottomAxisX + ',' + bottomAxisY +
-        ')'
+      transform: 'translate(' + bottomAxisX + ',' + bottomAxisY + ')'
     });
 
   var bottomAxisNodes = bottomAxisGroup.call(bottomAxis);
@@ -139,23 +167,4 @@ d3.csv('baby_names_data/yob1880.csv', function(data) {
       transform: 'rotate(-60)'
     });
 
-
 }); //end d3.csv
-
-
-
-
-function styleAxisNodes(axisNodes) {
-  axisNodes.selectAll('.domain')
-    .attr({
-      fill: 'none',
-      'stroke-width': 1,
-      stroke: 'black'
-    });
-  axisNodes.selectAll('.tick line')
-    .attr({
-      fill: 'none',
-      'stroke-width': 1,
-      stroke: 'black'
-    });
-}
