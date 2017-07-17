@@ -9,11 +9,14 @@
   <script src="node_modules/d3/d3.min.js" charset="utf-8"></script>
 </head>
 
-<body>
+<body ng-app="chartApp" ng-controller="SalesController">
 
 
-  <script src="app_v2.js" charset="utf-8"></script>
+  <h1>Today's Sales Chart</h1>
+  <bar-chart chart-data="salesData"></bar-chart>
 
+  <!-- <script src="app_v2.js" charset="utf-8"></script> -->
+  <script src="./angular_tester.js" charset="utf-8"></script>
 </body>
 
 </html>
