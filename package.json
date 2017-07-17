@@ -1,0 +1,24 @@
+{
+  "name": "d3_practice_babynames",
+  "version": "1.0.0",
+  "description": "Practices combining D3 w/ Angular routes",
+  "main": "app_v1.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ypaulsussman/d3_baby_names.git"
+  },
+  "author": "Y Paul Sussman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ypaulsussman/d3_baby_names/issues"
+  },
+  "homepage": "https://github.com/ypaulsussman/d3_baby_names#readme",
+  "dependencies": {
+    "angular": "^1.6.5",
+    "angular-route": "^1.6.5",
+    "d3": "3.5.17"
+  }
+}

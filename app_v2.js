@@ -29,8 +29,9 @@ function styleAxisNodes(axisNodes) {
 }
 
 
-d3.csv('baby_names_data/yob1880.csv', function(data) {
+var tester = d3.csv('baby_names_data/yob1880.csv', function(data) {
 
+  console.log('testeroonie');
   //============== get most popular names, counts & max count ==============//
   var topNameCounts = data
     .filter(function(d, i) {
